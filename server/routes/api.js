@@ -1,13 +1,13 @@
 module.exports = (app, connection) => {
   app.get("/api/alluser", async (req, res) => {
     try {
-      await connection.query("SELECT * FROM users", (err, result, fields) => {
+      await connection.query("SELECT * FROM users", (err, result) => {
         if (err) {
           console.log(err);
           return res.status(400).send();
         }
-        // console.log(result);
-        res.status(200).json({ result: result });
+        console.log(result);
+        res.status(200).json(result);
       });
     } catch (error) {
       console.log(err);
@@ -26,7 +26,7 @@ module.exports = (app, connection) => {
         if (err) {
           console.log(err);
         } else {
-          //console.log(result);
+          console.log(result);
           res.send("Insert susscessed");
         }
       }
