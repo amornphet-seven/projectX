@@ -7,6 +7,7 @@ module.exports = (app, connection) => {
           return res.status(400).send();
         }
         console.log(result);
+
         res.status(200).json(result);
       });
     } catch (error) {
@@ -26,7 +27,7 @@ module.exports = (app, connection) => {
         if (err) {
           console.log(err);
         } else {
-          console.log(result);
+          console.log("Insert susscessed");
           res.send("Insert susscessed");
         }
       }
@@ -55,8 +56,8 @@ module.exports = (app, connection) => {
     );
   });
 
-  app.delete("/api/deleteuser/:id", async (req, res) => {
-    let id = req.params.id;
+  app.delete("/api/deleteuser/:user_id", async (req, res) => {
+    let id = req.params.user_id;
 
     await connection.query(
       "DELETE FROM users WHERE user_id = ?",
@@ -70,5 +71,15 @@ module.exports = (app, connection) => {
         }
       }
     );
+  });
+
+  app.get("/xxx", async (req, res) => {
+    let mockData = {
+      user_name: "test2",
+      user_email: "tset2@po.com",
+      user_status: "active",
+    };
+    console.log(mockData);
+    res.json({ result: mockData });
   });
 };
