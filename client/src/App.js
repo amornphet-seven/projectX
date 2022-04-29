@@ -7,10 +7,9 @@ function App() {
   const [email, setEmail] = useState("");
 
   const getUsers = () => {
+    setUserList([]);
     axios.get("http://localhost:8080/api/alluser").then((res) => {
       setUserList(res.data);
-
-      console.log(res.data);
     });
   };
 
@@ -33,17 +32,18 @@ function App() {
       });
   };
 
-  // const deleteUser = (user_id) => {
-  //   axios.delete(`http://localhost:8080/api/deleteuser/${user_id}`).then((res) => {
-  //     setUserList(
-  //       userList.filters((val) => {
-  //         return val.user_id !== user_id;
-          
-  //       })
-  //     );
-  //   });
-  
-  // };
+  const deleteUser = (user_id) => {
+    axios
+      .delete(`http://localhost:8080/api/deleteuser/${user_id}`)
+      .then((res) => {
+        setUserList(
+          userList.filters((val) => {
+            return val.user_id !== user_id;
+          })
+        );
+      });
+    getUsers();
+  };
 
   return (
     <div className="App container">
@@ -90,14 +90,14 @@ function App() {
               }}
             ></input>
           </div>
-          <button className="btn btn-success" onClick={addUser}>
+          <button className="btn btn-success" onClick={() => addUser()}>
             Add User
           </button>
         </form>
       </div>
       <hr></hr>
       <div>
-        <button className="btn btn-primary" onClick={getUsers}>
+        <button className="btn btn-primary" onClick={() => getUsers()}>
           Show User
         </button>
         <br></br>
@@ -110,7 +110,14 @@ function App() {
                 <p className="card-text"> Name : {val.user_name}</p>
                 <p className="card-text"> Status : {val.user_status}</p>
                 <p className="card-text"> Email : {val.user_email}</p>
-                  {/* <button className="btn btn-danger" onClick={deleteUser(val.user_id)}>Delete</button> */}
+                <button
+                  className="btn btn-danger"
+                  onClick={() => {
+                    deleteUser(val.user_id);
+                  }}
+                >
+                  Delete
+                </button>
               </div>
             </div>
           );
